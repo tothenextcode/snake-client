@@ -9,7 +9,8 @@ const connect = () => {
   conn.setEncoding('utf8');
 
   conn.on('connect', () => {
-    console.log('Connection Successful!');
+    console.log('Successfully connected to game server');
+    conn.write('Name: KEK');
   });
 
   return conn;
