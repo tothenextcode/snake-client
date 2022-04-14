@@ -9,6 +9,7 @@ const AUTO_MOVE_DEFAULT = true;
 
 let connection;
 let intervalID;
+let msg = '';
 
 const setupInput = (conn) => {
   const stdin = process.stdin;
