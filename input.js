@@ -9,7 +9,8 @@ const AUTO_MOVE_DEFAULT = true;
 
 let connection;
 let intervalID;
-let msg = '';
+let message = '';
+let logMessage = false;
 
 const setupInput = (conn) => {
   const stdin = process.stdin;
@@ -22,12 +23,24 @@ const setupInput = (conn) => {
 }
 
 const handleUserInput = (key) => {
-  if (key === '\u0003') {
+  if (key === '\u0003') { //Ctrl+C
     console.log('Connection Terminated!');
     return process.exit();;
   }
 
-  if (Object.keys(movement).includes(key)) {
+  if (key === '\u0013') { //Ctrl+S
+    logMessage = true;
+  } else if (logMessage) {
+    message += key;
+  }
+
+  if (key === '\r' && logMessage) { //Send Message
+    connection.write(`Say: ${message}`);
+    message = "";
+    logMessage = false;
+  }
+
+  if (Object.keys(movement).includes(key) && !logMessage) { // WASD Movement
     if (intervalID !== undefined) {
       clearInterval(intervalID);
     }
@@ -36,11 +49,11 @@ const handleUserInput = (key) => {
       intervalID = setInterval(() => {
         connection.write(movement[key]);
       }, GAME_SPEED * 100);
-      return;
+    } else {
+      connection.write(movement[key]);
     }
-
-    connection.write(movement[key]);
   }
+
 };
 
 module.exports = { setupInput }
