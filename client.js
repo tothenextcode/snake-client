@@ -2,21 +2,15 @@ const net = require('net');
 
 const connect = () => {
   const conn = net.createConnection({
-    host: '165.227.47.243',
+    host: '10.0.2.15', //'165.227.47.243',
     port: 50541
   });
 
   conn.setEncoding('utf8');
 
-  console.log('Connecting...');
-
   conn.on('connect', () => {
     console.log('Successfully connected to game server');
-    conn.write('Name: CYA');
-
-    // setInterval(() => {
-    //   conn.write('Move: up');
-    // }, 50);
+    conn.write('Name: JCF');
   });
 
   return conn;
